@@ -93,6 +93,10 @@ void openapps_init(void) {
     uinject_init();
 #endif
 
+#if OPENWSN_USENSOR_NETWORK_C
+    usensor_network_init();
+#endif
+
 #if OPENWSN_USERIALBRIDGE_C
     userialbridge_init();
 #endif

@@ -18,6 +18,7 @@
 #include "sctimer.h"
 #include "openrandom.h"
 #include "msf.h"
+#include "uart_tx.h"
 
 #ifdef SCUM
 #include "channel.h"

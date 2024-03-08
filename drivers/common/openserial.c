@@ -117,20 +117,20 @@ void openserial_init(void) {
 //===== transmitting
 
 owerror_t openserial_printStatus(uint8_t statusElement, uint8_t *buffer, uint8_t length) {
-    uint8_t i;
+    // uint8_t i;
 
-    outputHdlcOpen();
-    outputHdlcWrite(SERFRAME_MOTE2PC_STATUS);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
-    outputHdlcWrite(statusElement);
-    for (i = 0; i < length; i++) {
-        outputHdlcWrite(buffer[i]);
-    }
-    outputHdlcClose();
+    // outputHdlcOpen();
+    // outputHdlcWrite(SERFRAME_MOTE2PC_STATUS);
+    // outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
+    // outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
+    // outputHdlcWrite(statusElement);
+    // for (i = 0; i < length; i++) {
+    //     outputHdlcWrite(buffer[i]);
+    // }
+    // outputHdlcClose();
 
-    // start TX'ing
-    openserial_flush();
+    // // start TX'ing
+    // openserial_flush();
 
     return E_SUCCESS;
 }
@@ -185,143 +185,144 @@ owerror_t openserial_printLog(
 }
 
 owerror_t openserial_printData(uint8_t *buffer, uint8_t length) {
-    uint8_t i;
-    uint8_t asn[5];
+    // uint8_t i;
+    // uint8_t asn[5];
 
-    // retrieve ASN
-    ieee154e_getAsn(asn);
+    // // retrieve ASN
+    // ieee154e_getAsn(asn);
 
-    outputHdlcOpen();
-    outputHdlcWrite(SERFRAME_MOTE2PC_DATA);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
-    outputHdlcWrite(asn[0]);
-    outputHdlcWrite(asn[1]);
-    outputHdlcWrite(asn[2]);
-    outputHdlcWrite(asn[3]);
-    outputHdlcWrite(asn[4]);
-    for (i = 0; i < length; i++) {
-        outputHdlcWrite(buffer[i]);
-    }
-    outputHdlcClose();
+    // outputHdlcOpen();
+    // outputHdlcWrite(SERFRAME_MOTE2PC_DATA);
+    // outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
+    // outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
+    // outputHdlcWrite(asn[0]);
+    // outputHdlcWrite(asn[1]);
+    // outputHdlcWrite(asn[2]);
+    // outputHdlcWrite(asn[3]);
+    // outputHdlcWrite(asn[4]);
+    // for (i = 0; i < length; i++) {
+    //     outputHdlcWrite(buffer[i]);
+    // }
+    // outputHdlcClose();
 
-    // start TX'ing
-    openserial_flush();
+    // // start TX'ing
+    // openserial_flush();
 
     return E_SUCCESS;
 }
 
 owerror_t openserial_printSniffedPacket(uint8_t *buffer, uint8_t length, uint8_t channel) {
-#if BOARD_OPENSERIAL_SNIFFER
-    uint8_t i;
+// #if BOARD_OPENSERIAL_SNIFFER
+//     uint8_t i;
 
-    outputHdlcOpen();
-    outputHdlcWrite(SERFRAME_MOTE2PC_SNIFFED_PACKET);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
-    for (i = 0; i < length; i++) {
-        outputHdlcWrite(buffer[i]);
-    }
-    outputHdlcWrite(channel);
-    outputHdlcClose();
+//     outputHdlcOpen();
+//     outputHdlcWrite(SERFRAME_MOTE2PC_SNIFFED_PACKET);
+//     outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
+//     outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
+//     for (i = 0; i < length; i++) {
+//         outputHdlcWrite(buffer[i]);
+//     }
+//     outputHdlcWrite(channel);
+//     outputHdlcClose();
 
-    // start TX'ing
-    openserial_flush();
+//     // start TX'ing
+//     openserial_flush();
 
-#endif
+// #endif
     return E_SUCCESS;
 }
 
 owerror_t openserial_printf(char *buffer, ...) {
-#if BOARD_OPENSERIAL_PRINTF
-    uint8_t  i;
-    char *ptr, *tmp;
-    char c;
-    void* p;
-    int d;
-    char buf[16];
-    char *fail = " - unknown format specifier - ";
+    return E_SUCCESS; 
+// #if BOARD_OPENSERIAL_PRINTF
+//     uint8_t  i;
+//     char *ptr, *tmp;
+//     char c;
+//     void* p;
+//     int d;
+//     char buf[16];
+//     char *fail = " - unknown format specifier - ";
 
-    uint8_t  asn[5];
+//     uint8_t  asn[5];
 
-    va_list ap;
-    va_start(ap, buffer);
+//     va_list ap;
+//     va_start(ap, buffer);
 
-    // retrieve ASN
-    ieee154e_getAsn(asn);
+//     // retrieve ASN
+//     ieee154e_getAsn(asn);
 
-    outputHdlcOpen();
-    outputHdlcWrite(SERFRAME_MOTE2PC_PRINTF);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
+//     outputHdlcOpen();
+//     outputHdlcWrite(SERFRAME_MOTE2PC_PRINTF);
+//     outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
+//     outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
 
-    for(i = 0; i < 5; i++) {
-        outputHdlcWrite(asn[i]);
-    }
+//     for(i = 0; i < 5; i++) {
+//         outputHdlcWrite(asn[i]);
+//     }
 
-    for (ptr = buffer; *ptr != '\0'; ptr++){
-        if (*ptr == '%') {
-              ptr++;
-              switch (*ptr) {
-                  case 'c':
-                      c = va_arg(ap, int);
-                      outputHdlcWrite(c);
-                      break;
-                  case 's':
-                      tmp = va_arg(ap, char*);
-                      while (*tmp != '\0'){
-                          outputHdlcWrite(*tmp);
-                          tmp++;
-                      }
-                      break;
-                  case 'd':
-                      d = va_arg(ap, int);
-                      snprintf(buf, 16, "%d", d);
-                      tmp = buf;
-                      while (*tmp != '\0'){
-                          outputHdlcWrite(*tmp);
-                          tmp++;
-                      }
-                      break;
-                  case 'x':
-                      d = va_arg(ap, int);
-                      snprintf(buf, 16, "%x", d);
-                      tmp = buf;
-                      while (*tmp != '\0'){
-                          outputHdlcWrite(*tmp);
-                          tmp++;
-                      }
-                      break;
-                  case 'p':
-                      p = va_arg(ap, void*);
-                      snprintf(buf, 16, "%p", p);
-                      tmp = buf;
-                      while (*tmp != '\0'){
-                          outputHdlcWrite(*tmp);
-                          tmp++;
-                      }
-                      break;
-                  case '%':
-                      outputHdlcWrite('%');
-                      break;
-                  default:
-                      for(tmp = fail; *tmp != '\0'; tmp++){
-                          outputHdlcWrite(*tmp);
-                      }
-              }
-        } else {
-            outputHdlcWrite(*ptr);
-        }
-    }
+//     for (ptr = buffer; *ptr != '\0'; ptr++){
+//         if (*ptr == '%') {
+//               ptr++;
+//               switch (*ptr) {
+//                   case 'c':
+//                       c = va_arg(ap, int);
+//                       outputHdlcWrite(c);
+//                       break;
+//                   case 's':
+//                       tmp = va_arg(ap, char*);
+//                       while (*tmp != '\0'){
+//                           outputHdlcWrite(*tmp);
+//                           tmp++;
+//                       }
+//                       break;
+//                   case 'd':
+//                       d = va_arg(ap, int);
+//                       snprintf(buf, 16, "%d", d);
+//                       tmp = buf;
+//                       while (*tmp != '\0'){
+//                           outputHdlcWrite(*tmp);
+//                           tmp++;
+//                       }
+//                       break;
+//                   case 'x':
+//                       d = va_arg(ap, int);
+//                       snprintf(buf, 16, "%x", d);
+//                       tmp = buf;
+//                       while (*tmp != '\0'){
+//                           outputHdlcWrite(*tmp);
+//                           tmp++;
+//                       }
+//                       break;
+//                   case 'p':
+//                       p = va_arg(ap, void*);
+//                       snprintf(buf, 16, "%p", p);
+//                       tmp = buf;
+//                       while (*tmp != '\0'){
+//                           outputHdlcWrite(*tmp);
+//                           tmp++;
+//                       }
+//                       break;
+//                   case '%':
+//                       outputHdlcWrite('%');
+//                       break;
+//                   default:
+//                       for(tmp = fail; *tmp != '\0'; tmp++){
+//                           outputHdlcWrite(*tmp);
+//                       }
+//               }
+//         } else {
+//             outputHdlcWrite(*ptr);
+//         }
+//     }
 
-    va_end(ap);
+//     va_end(ap);
 
-    outputHdlcClose();
+//     outputHdlcClose();
 
-    // start TX'ing
-    openserial_flush();
-#endif
-    return E_SUCCESS;
+//     // start TX'ing
+//     openserial_flush();
+// #endif
+//     return E_SUCCESS;
 }
 
 //===== retrieving inputBuffer
@@ -571,20 +572,20 @@ owerror_t internal_openserial_print(
         errorparameter_t arg2
 ) {
 
-    outputHdlcOpen();
-    outputHdlcWrite(severity);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
-    outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
-    outputHdlcWrite(calling_component);
-    outputHdlcWrite(error_code);
-    outputHdlcWrite((uint8_t)((arg1 & 0xff00) >> 8));
-    outputHdlcWrite((uint8_t)(arg1 & 0x00ff));
-    outputHdlcWrite((uint8_t)((arg2 & 0xff00) >> 8));
-    outputHdlcWrite((uint8_t)(arg2 & 0x00ff));
-    outputHdlcClose();
+    // outputHdlcOpen();
+    // outputHdlcWrite(severity);
+    // outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[0]);
+    // outputHdlcWrite(idmanager_getMyID(ADDR_16B)->addr_16b[1]);
+    // outputHdlcWrite(calling_component);
+    // outputHdlcWrite(error_code);
+    // outputHdlcWrite((uint8_t)((arg1 & 0xff00) >> 8));
+    // outputHdlcWrite((uint8_t)(arg1 & 0x00ff));
+    // outputHdlcWrite((uint8_t)((arg2 & 0xff00) >> 8));
+    // outputHdlcWrite((uint8_t)(arg2 & 0x00ff));
+    // outputHdlcClose();
 
-    // start TX'ing
-    openserial_flush();
+    // // start TX'ing
+    // openserial_flush();
 
     return E_SUCCESS;
 }

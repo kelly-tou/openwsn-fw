@@ -14,12 +14,13 @@
 #include "icmpv6rpl.h"
 #include "idmanager.h"
 #include "openrandom.h"
+#include "uart_tx.h"
 
 #include "msf.h"
 
 //=========================== defines =========================================
 
-#define UINJECT_TRAFFIC_RATE 2 ///> the value X indicates 1 packet/X minutes
+#define UINJECT_TRAFFIC_RATE 1 ///> the value X indicates 1 packet/X minutes
 
 //=========================== variables =======================================
 
@@ -42,6 +43,7 @@ void _uinject_task_cb(void);
 //=========================== public ==========================================
 
 void uinject_init(void) {
+    uart_tx_init();
 
     // clear local variables
     memset(&_sock, 0, sizeof(sock_udp_t));
@@ -73,8 +75,6 @@ void uinject_init(void) {
 }
 
 //=========================== private =========================================
-
-
 
 void uinject_sock_handler(sock_udp_t *sock, sock_async_flags_t type, void *arg) {
     (void) arg;
@@ -119,6 +119,7 @@ void _uinject_timer_cb(opentimers_id_t id) {
 }
 
 void _uinject_task_cb(void) {
+    uart_tx_send_str("called\n");
     uint8_t asnArray[5];
     open_addr_t parentNeighbor;
     bool foundNeighbor;
@@ -127,26 +128,31 @@ void _uinject_task_cb(void) {
     if (ieee154e_isSynch() == FALSE) {
         return;
     }
+    uart_tx_send_str("synchronized\n");
 
     // don't run on dagroot
     if (idmanager_getIsDAGroot()) {
         opentimers_destroy(uinject_vars.timerId);
         return;
     }
+    uart_tx_send_str("not the root\n");
 
     foundNeighbor = icmpv6rpl_getPreferredParentEui64(&parentNeighbor);
     if (foundNeighbor == FALSE) {
         return;
     }
+    uart_tx_send_str("neighbor\n");
 
     if (schedule_hasNegotiatedCellToNeighbor(&parentNeighbor, CELLTYPE_TX) == FALSE) {
         return;
     }
+    uart_tx_send_str("schedule\n");
 
     if (uinject_vars.busySendingUinject == TRUE) {
         // don't continue if I'm still sending a previous uinject packet
         return;
     }
+    uart_tx_send_str("not busy\n");
 
     // if you get here, send a packet
     sock_udp_ep_t remote;
@@ -158,6 +164,7 @@ void _uinject_task_cb(void) {
     uint8_t len = 0;
     // add 'uinject' string
     memcpy(&payload[len], uinject_payload, sizeof(uinject_payload) - 1);
+    // uart_tx_send(payload, sizeof(uinject_payload));
     len += sizeof(uinject_payload) - 1;
     // add counter
     payload[len++] = (uint8_t)(uinject_vars.counter & 0x00ff);
@@ -185,8 +192,10 @@ void _uinject_task_cb(void) {
 
     if (sock_udp_send(&_sock, payload, len, &remote) > 0) {
         // set busySending to TRUE
+        uart_tx_send_str("busy sending\n");
         uinject_vars.busySendingUinject = TRUE;
     }
+    uart_tx_send_str("goodbye\n");
 }
 
 #endif /* OPENWSN_UINJECT_C */
